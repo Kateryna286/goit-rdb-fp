@@ -159,3 +159,25 @@ SELECT
     CURDATE()
   ) AS years_difference
 FROM infectious_cases_normalized;
+
+-- П.5 Створення функції для розрахунку різниці в роках
+DELIMITER //
+
+CREATE FUNCTION year_diff_from_now(input_year INT)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+  RETURN TIMESTAMPDIFF(
+    YEAR,
+    MAKEDATE(input_year, 1),
+    CURDATE()
+  );
+END //
+
+DELIMITER ;
+
+-- П.6 Використання функції year_diff_from_now для розрахунку різниці в роках
+SELECT
+  year,
+  year_diff_from_now(year) AS years_difference
+FROM infectious_cases_normalized;
